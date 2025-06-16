@@ -59,7 +59,6 @@ pipeline {
                     gcloud container clusters get-credentials gloud-k8s-cluster \
                         --region us-central1 \
                         --project devopstraining-459716 \
-                        --kubeconfig=$HOME/.kube/config
 
                     echo "Deploying Helm chart..."
                     helm install my-app ./charts/my-app
