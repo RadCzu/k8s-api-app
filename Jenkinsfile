@@ -45,8 +45,8 @@ pipeline {
         }
 
         stage('K8S Deploy') {
+          steps {
            withCredentials([file(credentialsId: 'gcloud-sa-key', variable: 'GCP_KEY')]) {
-            steps {
                 sh '''
                     source .env
 
