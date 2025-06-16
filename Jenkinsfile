@@ -61,7 +61,7 @@ pipeline {
                         --project devopstraining-459716 \
 
                     echo "Deploying Helm chart..."
-                    helm install my-app ./charts/my-app
+                    helm install api-app ./k8s-api-app
                 '''
           }
         }
