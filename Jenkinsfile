@@ -2,7 +2,7 @@ pipeline {
     environment {
         DOCKER_HOST = 'tcp://host.docker.internal:2375'
         CLOUDSDK_CONFIG = "${WORKSPACE}/.gcloud"
-        HOME = ${WORKSPACE}
+        HOME = "${WORKSPACE}"
     }
     agent {
         docker {
