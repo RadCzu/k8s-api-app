@@ -49,6 +49,8 @@ pipeline {
                 sh '''
                     source .env
 
+                    gcloud auth list
+
                     echo "Impersonating service account to get cluster credentials..."
                     gcloud auth print-access-token --impersonate-service-account=$K8S_SA_EMAIL > admin-token.txt
 
