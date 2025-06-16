@@ -49,15 +49,14 @@ pipeline {
                 sh '''
                     source .env
 
-                    gcloud auth list
+                    gcloud secrets versions access latest --secret="k8s_admin_access" > /tmp/gcp-key.json
+                    gcloud auth activate-service-account --key-file=/tmp/gcp-key.json
 
-                    echo "Impersonating service account to get cluster credentials..."
-                    gcloud auth print-access-token --impersonate-service-account=$K8S_SA_EMAIL > admin-token.txt
+                    gcloud config set project devopstraining-459716
 
                     gcloud container clusters get-credentials gloud-k8s-cluster \
                         --region us-central1 \
                         --project devopstraining-459716 \
-                        --access-token=$(cat admin-token.txt)
 
                     echo "Deploying Helm chart..."
                     helm install my-app ./charts/my-app
