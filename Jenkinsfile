@@ -45,9 +45,14 @@ pipeline {
         }
 
         stage('K8S Deploy') {
+           withCredentials([file(credentialsId: 'gcloud-sa-key', variable: 'GCP_KEY')]) {
             steps {
                 sh '''
                     source .env
+
+                    gcloud auth activate-service-account --key-file="$GCP_KEY"
+                    gcloud config set project devopstraining-459716
+                    export GOOGLE_APPLICATION_CREDENTIALS="$GCP_KEY"
 
                     echo "Impersonating service account to get cluster credentials..."
                     gcloud auth print-access-token --impersonate-service-account=$K8S_SA_EMAIL > admin-token.txt
@@ -61,6 +66,7 @@ pipeline {
                     helm install my-app ./charts/my-app
                 '''
             }
+          }
         }
     }
 }
