@@ -2,6 +2,7 @@ pipeline {
     environment {
         DOCKER_HOST = 'tcp://host.docker.internal:2375'
         CLOUDSDK_CONFIG = "${WORKSPACE}/.gcloud"
+        HOME = ${WORKSPACE}
     }
     agent {
         docker {
@@ -19,6 +20,7 @@ pipeline {
                 sh '''
                     rm -f .env admin-token.txt
                     mkdir -p $CLOUDSDK_CONFIG
+                    mkdir -p $HOME/.kube
                 '''
             }
         }
@@ -57,6 +59,7 @@ pipeline {
                     gcloud container clusters get-credentials gloud-k8s-cluster \
                         --region us-central1 \
                         --project devopstraining-459716 \
+                        --kubeconfig=$HOME/.kube/config
 
                     echo "Deploying Helm chart..."
                     helm install my-app ./charts/my-app
